@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
-
 from selenium import webdriver
 from selenium.common import exceptions
+from selenium.webdriver.support.ui import WebDriverWait
 import time
 from decimal import *
 
@@ -63,23 +62,34 @@ def test_convert_rur_to_rur(currency):
         print("Replacement mistake")
     browser.quit()
 
-def test_early_date(new_date):
+def test_early_date(year='2016', month='1', day="10"):
     # get firefox browser and open url
     browser = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver')
     browser.get("http://www.sberbank.ru/ru/quotes/converter")
     assert "Сбербанк" in browser.title
     time.sleep(2.5)
-    # select the date
+    # open datepicker, select year, month and day
     browser.find_element_by_xpath("//div[6]/label[2]/p").click()
     time.sleep(1.5)
-    old_date = browser.find_element_by_xpath("//*[contains(@name, 'converter-datepicker')]")
-    old_date.clear()
-    old_date.send_keys(new_date)
-    time.sleep(1.5)
+    WebDriverWait(browser, 10).until(lambda x: browser.find_element_by_xpath("//*[@id='ui-datepicker-div']"))
+    browser.find_element_by_xpath("//div[6]/div[2]/span").click()
+    time.sleep(2.5)
+    browser.find_element_by_xpath(
+        "//div/div/select/option[contains(text(), "+ year +")]").click()
+    time.sleep(2.5)
+    for i in range(int(month) - 1):
+        browser.find_element_by_xpath(
+            "//*[@id='ui-datepicker-div']/div[1]/a[2]").click()
+        time.sleep(2.5)
+    browser.find_element_by_xpath(
+        "//div[@id='ui-datepicker-div']//a[@class='ui-state-default'][text()='"+ day + "']").click()
+    time.sleep(2.5)
+    browser.find_element_by_xpath("//dl/span[contains(., 'Выбрать')]").click()
+    time.sleep(2.5)
     browser.find_element_by_xpath("//div[7]/button[contains(., 'Показать')]").click()
-    time.sleep(1.5)
+    time.sleep(2.5)
     try:
-        result = browser.find_element_by_xpath("//h4/span[1]").text
+        result = browser.find_element_by_xpath("//h4/span[1]").text.replace(',', '.')
         try:
             assert Decimal(result) != 0
             print(Decimal(result))

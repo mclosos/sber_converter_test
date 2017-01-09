@@ -10,9 +10,9 @@ for i in range(1,7):
     test_cases.test_convert_rur_to_rur(str(i))
 
 # test_case_3
-test_cases.test_early_date("22.02.2002 15:35")
-test_cases.test_early_date("01.01.2002 00:00")
-test_cases.test_early_date("31.12.2007 23:59")
-test_cases.test_early_date("29.02.2008 08:59")
-test_cases.test_early_date("29.02.2009 08:59")
-test_cases.test_early_date("03.01.2015 08:59")
+test_cases.test_early_date(year='2016', month='11', day='10')
+test_cases.test_early_date(year='2015', month='12', day='31')
+test_cases.test_early_date(year='2012', month='2', day='29')
+test_cases.test_early_date(year='2008', month='1', day='1')
+test_cases.test_early_date(year='2003', month='6', day='15')
+test_cases.test_early_date(year='2002', month='2', day='1')
