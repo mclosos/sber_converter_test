@@ -5,4 +5,6 @@ test_cases.test_variable_sum("100,00")
 test_cases.test_variable_sum("99999999999,00")
 
 #test_case_2
-test_cases.test_convert_rur_to_rur()
+for i in range(1,7):
+    test_cases.test_convert_rur_to_rur(str(i))
+
