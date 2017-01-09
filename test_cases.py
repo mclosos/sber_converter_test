@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from selenium import webdriver
+from selenium.common import exceptions
 import time
 from decimal import *
 
@@ -11,7 +12,7 @@ def test_variable_sum(sum_to_convert):
     assert "Сбербанк" in browser.title
     #wait a little.
     time.sleep(1.5)
-
+    #clear and fill the sum field, click the button for result
     sum_of_money = browser.find_element_by_xpath("//div/form/input")
     sum_of_money.clear()
     sum_of_money.send_keys(sum_to_convert)
@@ -20,6 +21,7 @@ def test_variable_sum(sum_to_convert):
     browser.find_element_by_xpath("//div[7]/button[contains(., 'Показать')]").click()
     time.sleep(1.5)
 
+    #
     result = browser.find_element_by_xpath("//h4/span[1]").text
     price = browser.find_element_by_xpath("//td[4]/span").text
 
@@ -60,3 +62,31 @@ def test_convert_rur_to_rur(currency):
     except AssertionError:
         print("Replacement mistake")
     browser.quit()
+
+def test_early_date(new_date):
+    # get firefox browser and open url
+    browser = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver')
+    browser.get("http://www.sberbank.ru/ru/quotes/converter")
+    assert "Сбербанк" in browser.title
+    time.sleep(2.5)
+    # select the date
+    browser.find_element_by_xpath("//div[6]/label[2]/p").click()
+    time.sleep(1.5)
+    old_date = browser.find_element_by_xpath("//*[contains(@name, 'converter-datepicker')]")
+    old_date.clear()
+    old_date.send_keys(new_date)
+    time.sleep(1.5)
+    browser.find_element_by_xpath("//div[7]/button[contains(., 'Показать')]").click()
+    time.sleep(1.5)
+    try:
+        result = browser.find_element_by_xpath("//h4/span[1]").text
+        try:
+            assert Decimal(result) != 0
+            print(Decimal(result))
+        except AssertionError:
+            print("Old date database error")
+    except exceptions.NoSuchElementException:
+        print("No result")
+
+    browser.quit()
+
