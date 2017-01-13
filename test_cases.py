@@ -2,16 +2,24 @@ from selenium import webdriver
 from selenium.common import exceptions
 from selenium.webdriver.support.ui import WebDriverWait
 import time
-from decimal import *
+from decimal import Decimal
+import pytest
 
-def test_variable_sum(sum_to_convert):
-    #get firefox browser and open url
-    browser =  webdriver.Chrome('/usr/lib/chromium-browser/chromedriver')
+@pytest.fixture
+def chromium_instance():
+    browser = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver')
     browser.get("http://www.sberbank.ru/ru/quotes/converter")
     assert "Сбербанк" in browser.title
-    #wait a little.
+    return browser
+
+
+def test_variable_sum(chromium_instance):
+    # get firefox browser and open url
+    browser = chromium_instance
+    sum_to_convert = '100,00'
+    # wait a little.
     time.sleep(1.5)
-    #clear and fill the sum field, click the button for result
+    # clear and fill the sum field, click the button for result
     sum_of_money = browser.find_element_by_xpath("//div/form/input")
     sum_of_money.clear()
     sum_of_money.send_keys(sum_to_convert)
@@ -36,20 +44,17 @@ def test_variable_sum(sum_to_convert):
     browser.quit()
 
 
-def test_convert_rur_to_rur(currency):
-
-    browser = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver')
-    browser.get("http://www.sberbank.ru/ru/quotes/converter")
-    assert "Сбербанк" in browser.title
-
+def test_convert_rur_to_rur(chromium_instance):
+    browser = chromium_instance
+    currency = "RUR"
     time.sleep(1.5)
     browser.find_element_by_xpath("//div[3]/div[2]/div/header/em").click()
     time.sleep(1.5)
-    browser.find_element_by_xpath("//div[1]/div[1]/div[3]/div[2]/div/div/span["+ currency +"]").click()
+    browser.find_element_by_xpath("//div[3]/div[2]/div/div/span[contains(., " + currency + ")]").click()
     time.sleep(1.5)
     browser.find_element_by_xpath("//div[4]/div[2]/div/header/em").click()
     time.sleep(1.5)
-    browser.find_element_by_xpath("//div[4]/div[2]/div/div/span[" + currency + "]").click()
+    browser.find_element_by_xpath("//div[4]/div[2]/div/div/span[contains(., " + currency + ")]").click()
     time.sleep(1.5)
     browser.find_element_by_xpath("//div[7]/button[contains(., 'Показать')]").click()
     time.sleep(1.5)
@@ -62,11 +67,12 @@ def test_convert_rur_to_rur(currency):
         print("Replacement mistake")
     browser.quit()
 
-def test_early_date(year='2016', month='1', day="10"):
-    # get firefox browser and open url
-    browser = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver')
-    browser.get("http://www.sberbank.ru/ru/quotes/converter")
-    assert "Сбербанк" in browser.title
+
+def test_early_date(chromium_instance):
+    browser = chromium_instance
+    year = '2016'
+    month = '1'
+    day = "10"
     time.sleep(2.5)
     # open datepicker, select year, month and day
     browser.find_element_by_xpath("//div[6]/label[2]/p").click()
