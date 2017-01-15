@@ -1,17 +1,18 @@
 from selenium import webdriver
 from selenium.common import exceptions
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
 from decimal import Decimal
 import pytest
 import time
+import allure
 
 
 @pytest.fixture
 def chromium_instance():
     """
-    Start chromedriver
+    Fixture. Start chromedriver.
     :return:
     """
     browser = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver')
@@ -24,10 +25,11 @@ def chromium_instance():
         print("Site is unreachable")
 
 
-@pytest.mark.parametrize("sum_to_convert", ["1,50", "100,00", "99999999999,00"])
+@allure.testcase("Test_variable_sum")
+@pytest.mark.parametrize("Check converting", ["1,50", "100,00", "99999999999,00"])
 def test_variable_sum(chromium_instance, sum_to_convert):
     """
-    Test different variables to convert from RUR to USD
+    Test different variables to convert from RUR to USD and check result.
     :param chromium_instance:
     :param sum_to_convert:
     :return:
@@ -39,13 +41,13 @@ def test_variable_sum(chromium_instance, sum_to_convert):
     time.sleep(1.5)
     sum_of_money.send_keys(sum_to_convert)
     time.sleep(1)
-    WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH,
+    WebDriverWait(browser, 10).until(ec.element_to_be_clickable((By.XPATH,
                                                                  "//div[7]/button[contains(., 'Показать')]")))
     browser.find_element_by_xpath("//div[7]/button[contains(., 'Показать')]").click()
-    WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH,
+    WebDriverWait(browser, 10).until(ec.element_to_be_clickable((By.XPATH,
                                                                  "//h4/span[1]")))
     result = browser.find_element_by_xpath("//h4/span[1]").text
-    WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH,
+    WebDriverWait(browser, 10).until(ec.element_to_be_clickable((By.XPATH,
                                                                  "//td[4]/span")))
     price = browser.find_element_by_xpath("//td[4]/span").text
     sum_to_convert = sum_to_convert.replace(',', '.').replace(' ', '')
@@ -57,10 +59,11 @@ def test_variable_sum(chromium_instance, sum_to_convert):
         browser.quit()
 
 
+@allure.testcase("Same_currencies")
 @pytest.mark.parametrize("currency", ["RUR", "CHF", "EUR", "GBP", "JPY", "USD"])
 def test_convert_rur_to_rur(chromium_instance, currency):
     """
-    Test converting same currencies (for example: RUR to RUR)
+    Test converting same currencies (for example: RUR to RUR).
     :param chromium_instance:
     :param currency:
     :return:
@@ -79,12 +82,13 @@ def test_convert_rur_to_rur(chromium_instance, currency):
         browser.quit()
 
 
+@allure.testcase("Old dates")
 @pytest.mark.parametrize("year", ["2016", "2002"])
 @pytest.mark.parametrize("month", ["2", "6", "12"])
 @pytest.mark.parametrize("day", ["1", "15", "29"])
 def test_early_date(chromium_instance, year, month, day):
     """
-    Test converting with different dates
+    Test converting with different dates.
     :param chromium_instance:
     :param year:
     :param month:
@@ -105,10 +109,10 @@ def test_early_date(chromium_instance, year, month, day):
             "//*[@id='ui-datepicker-div']/div[1]/a[2]").click()
     browser.find_element_by_xpath(
         "//div[@id='ui-datepicker-div']//a[@class='ui-state-default'][text()='"+ day + "']").click()
-    WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH,
+    WebDriverWait(browser, 10).until(ec.element_to_be_clickable((By.XPATH,
                                                                  "//dl/span[contains(., 'Выбрать')]")))
     browser.find_element_by_xpath("//dl/span[contains(., 'Выбрать')]").click()
-    WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH,
+    WebDriverWait(browser, 10).until(ec.element_to_be_clickable((By.XPATH,
                                                                  "//div[7]/button[contains(., 'Показать')]")))
     browser.find_element_by_xpath("//div[7]/button[contains(., 'Показать')]").click()
     time.sleep(1)
