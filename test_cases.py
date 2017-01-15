@@ -7,6 +7,13 @@ from decimal import Decimal
 import pytest
 import time
 import allure
+import csv
+
+testparams = []
+with open('test_data.csv', 'r') as f:
+    reader = csv.reader(f)
+    for row in reader:
+        testparams.append(row)
 
 
 @pytest.fixture
@@ -26,7 +33,7 @@ def chromium_instance():
 
 
 @allure.testcase("Check_converting")
-@pytest.mark.parametrize("sum_to_convert", ["1,50", "100,00", "99999999999,00"])
+@pytest.mark.parametrize(testparams[0][0], testparams[0][1:])
 def test_variable_sum(chromium_instance, sum_to_convert):
     """
     Test different variables to convert from RUR to USD and check result.
@@ -60,7 +67,7 @@ def test_variable_sum(chromium_instance, sum_to_convert):
 
 
 @allure.testcase("Same_currencies")
-@pytest.mark.parametrize("currency", ["RUR", "CHF", "EUR", "GBP", "JPY", "USD"])
+@pytest.mark.parametrize(testparams[1][0], testparams[1][1:])
 def test_convert_rur_to_rur(chromium_instance, currency):
     """
     Test converting same currencies (for example: RUR to RUR).
@@ -83,9 +90,9 @@ def test_convert_rur_to_rur(chromium_instance, currency):
 
 
 @allure.testcase("Old dates")
-@pytest.mark.parametrize("year", ["2016", "2002"])
-@pytest.mark.parametrize("month", ["2", "6", "12"])
-@pytest.mark.parametrize("day", ["1", "15", "29"])
+@pytest.mark.parametrize(testparams[2][0], testparams[2][1:])
+@pytest.mark.parametrize(testparams[3][0], testparams[3][1:])
+@pytest.mark.parametrize(testparams[4][0], testparams[4][1:])
 def test_early_date(chromium_instance, year, month, day):
     """
     Test converting with different dates.
