@@ -36,7 +36,7 @@ def test_variable_sum(chromium_instance, sum_to_convert):
     browser.implicitly_wait(10)
     sum_of_money = browser.find_element_by_xpath("//div/form/input")
     sum_of_money.clear()
-    time.sleep(1)
+    time.sleep(1.5)
     sum_of_money.send_keys(sum_to_convert)
     time.sleep(1)
     WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH,
