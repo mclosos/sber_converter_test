@@ -1,13 +1,19 @@
 # sber_converter_test
+<b>Packets</b>:
+<pre>
+pytest==2.9.0
+pytest-allure-adaptor==1.7.6
+selenium==3.0.2
+</pre>
 
-_Test target URL:_ http://www.sberbank.ru/ru/quotes/converter
+<b>Test target URL:</b> http://www.sberbank.ru/ru/quotes/converter
 
-Webdriver specified in fixture:
+Webdriver is specified in fixture:
 <pre>
 browser = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver')
 </pre>
 
-_Test data:_
+<b>Test data:</b>
 <pre>
 test_data.csv 
 </pre>
@@ -16,7 +22,7 @@ as rows like
 ({parameter_name},{value1},...{valueN})
 </pre>
 
-_How_To_Start:_
+<b>How_To_Start:</b>
 <pre>
 python -m pytest --alluredir reports/
 </pre>
