@@ -25,8 +25,8 @@ def chromium_instance():
         print("Site is unreachable")
 
 
-@allure.testcase("Test_variable_sum")
-@pytest.mark.parametrize("Check converting", ["1,50", "100,00", "99999999999,00"])
+@allure.testcase("Check_converting")
+@pytest.mark.parametrize("sum_to_convert", ["1,50", "100,00", "99999999999,00"])
 def test_variable_sum(chromium_instance, sum_to_convert):
     """
     Test different variables to convert from RUR to USD and check result.
