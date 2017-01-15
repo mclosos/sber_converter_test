@@ -1,0 +1,92 @@
+#############################
+#Test case 1                #
+#############################
+Steps:
+1. Sum = 100 [1.5, 999999999999]
+2. From RUR
+3. To USD
+4. rest of params: default
+5. Press Show
+
+Expected result: Sum / USD price
+Automated: yes
+
+#############################
+# Test case 2               #
+#############################
+Steps:
+1. Sum = 100 
+2. From RUR [USD, CHF...]
+3. To RUR [USD, CHF]
+4. Press Show
+
+
+Expected result: From-value becomes equals To-value
+Automated: yes
+
+#############################
+# Test case 3               #
+#############################
+Steps:
+1. Sum = 999 999 999 999
+2. From GBP
+3. To RUR
+4. Source: bank account
+5. Receiving: cash
+6. Changing type: branch
+7. Package: None
+8. time: 31.01.2003 11:00
+9. Press Show
+
+Expected result: RUB result != 0, result is shown
+Automated: yes
+
+#############################
+# Test case 4               #
+############################# 
+Steps:
+1. Sum = 0
+2. rest of params: default
+3. Press Show
+
+Expected result: scroll up to sum, rest of params stays the same
+Automated: no
+
+
+#############################
+# Test case 5               #
+#############################
+
+1. Sum = 100
+2. Service package: Premier
+3. Press Show (result1)
+4. Sum = 100
+5. Service package: None
+6. Press Show (result2)
+
+Expected result: result1 > result2
+Automated: no
+
+
+#############################
+# Test case 6               #
+#############################
+
+1. From CHF
+2. To RUR
+3. Press Show
+
+Expected result: Chart of exchange show CHF to RUR graph
+Automated: no
+
+
+#############################
+# Test case 7               #
+#############################
+
+1. From GBP
+2. To USD
+3. Press Show
+
+Expected result: Chart of exchange show GBP to RUR graph (Not sure that it is correct, maybe this chart only for XXXtoRUR)
+Automated:no
