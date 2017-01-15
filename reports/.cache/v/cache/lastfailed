@@ -1,1 +1,13 @@
-{}
+{
+  "::test_early_date[1-12-2002]": true,
+  "::test_early_date[1-2-2002]": true,
+  "::test_early_date[1-6-2002]": true,
+  "::test_early_date[15-12-2002]": true,
+  "::test_early_date[15-2-2002]": true,
+  "::test_early_date[15-6-2002]": true,
+  "::test_early_date[29-12-2002]": true,
+  "::test_early_date[29-2-2002]": true,
+  "::test_early_date[29-6-2002]": true,
+  "::test_variable_sum[100,00]": true,
+  "::test_variable_sum[99999999999,00]": true
+}
